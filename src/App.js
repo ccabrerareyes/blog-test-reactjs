@@ -1,11 +1,11 @@
-import * as React from "react";
+import React, { Component } from "react";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Home } from "./pages/Home";
 import { NotFound } from "./pages/NotFound";
 import { PostDetail } from "./pages/PostDetail";
 
-class App extends React.Component {
+class App extends Component {
   render() {
     return (
       <div className="App">

@@ -1,10 +1,9 @@
-import * as React from "react";
+import React, { Component } from "react";
 import { Card, Image, Text } from "@mantine/core";
 import { ButtonViewDetail } from "./ButtonViewDetail";
-import { Post } from "./../Interfaces/Post";
 
-export class PostCard extends React.Component<Post> {
-  render(): React.ReactNode {
+export class PostCard extends Component {
+  render() {
     const { id, title, body } = this.props;
 
     return (

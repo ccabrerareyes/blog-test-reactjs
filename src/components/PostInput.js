@@ -1,19 +1,18 @@
-import * as React from "react";
+import React, { Component } from "react";
 import { Button, Input, Space, Textarea, Title } from "@mantine/core";
-import { NewPost } from "./../Interfaces/Post";
 
-export class PostInput extends React.Component {
-  state: NewPost = {
+export class PostInput extends Component {
+  state = {
     title: "",
     body: "",
     userId: 1,
   };
 
-  handleChangeTitle = (e: any) => {
+  handleChangeTitle = (e) => {
     this.setState({ title: e.target.value });
   };
 
-  handleChangeBody = (e: any) => {
+  handleChangeBody = (e) => {
     this.setState({ body: e.target.value });
   };
 
@@ -36,9 +35,14 @@ export class PostInput extends React.Component {
       .then((json) => {
         const sessionPost = JSON.parse(sessionStorage.getItem("posts") || "[]");
         const savePost = [...sessionPost, json];
+        this.onTrigger(json);
         sessionStorage.setItem("posts", JSON.stringify(savePost));
         console.log(json);
       });
+  };
+
+  onTrigger = (eventData) => {
+    this.props.updateList(eventData);
   };
 
   render() {

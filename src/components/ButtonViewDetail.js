@@ -1,9 +1,8 @@
-import * as React from "react";
+import React from "react";
 import { Button } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
 
 export function ButtonViewDetail({ children }) {
-  //   const { id } = this.props as any;
   const navigate = useNavigate();
   const navigateToDetail = () => navigate(`/detail?id=${children}`);
 
