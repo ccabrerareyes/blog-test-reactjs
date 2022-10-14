@@ -1,28 +1,19 @@
-// import logo from "./logo.svg";
-import React, { Component } from "react";
+import * as React from "react";
 import "./App.css";
-// import Demo from "./modal";
-// import AvatarLocal from "./profile";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Home } from "./pages/Home";
 import { NotFound } from "./pages/NotFound";
 import { PostDetail } from "./pages/PostDetail";
 
-class App extends Component {
+class App extends React.Component {
   render() {
     return (
       <div className="App">
         <BrowserRouter>
           <Routes>
+            <Route path="/" element={<Home />} errorElement={<NotFound />} />
             <Route
-              exact
-              path="/"
-              element={<Home />}
-              errorElement={<NotFound />}
-            />
-            <Route
-              exact
-              path="/detail/:postId"
+              path="/detail"
               element={<PostDetail />}
               errorElement={<NotFound />}
             />

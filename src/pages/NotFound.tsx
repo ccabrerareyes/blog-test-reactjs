@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { ButtonBackToHome } from "../components/ButtonBackToHome";
 import { Title } from "@mantine/core";
 
