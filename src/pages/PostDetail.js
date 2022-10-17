@@ -1,25 +1,62 @@
-import React from "react";
-import { ButtonBackToHome } from "../components/ButtonBackToHome";
-import { Title } from "@mantine/core";
+import React, {useState, useEffect} from "react";
 import { useSearchParams } from "react-router-dom";
+import { ButtonBackToHome } from "../components/ButtonBackToHome";
+import { Container, Title } from "@mantine/core";
+import { getPostDetail } from "../services/posts";
+import { Error } from "./Error";
+import { ButtonDelete } from '../components/ButtonDelete'
 
-export const PostDetail = () => {
+function useDetail() {
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id");
-  console.log(searchParams.get("id")); // 'name'
-  let post = {};
-  fetch(`https://jsonplaceholder.typicode.com/posts/${id}`)
-    .then((response) => response.json())
-    .then((data) => {
-      console.log("data: ", data);
-      post = data;
-    });
-  console.log("post: ", post);
+  console.log(searchParams.get("id"));
 
-  return (
-    <div>
-      <Title order={1}>Detalle Post</Title>
-      <ButtonBackToHome />
-    </div>
-  );
-};
+  const [value, setvalue] = useState(null);
+  const [error, seterror] = useState(null);
+  const [loading, setloading] = useState(true);
+  
+  async function getDetail() {
+    try {
+      setloading(true);
+      const value = await getPostDetail(id);
+      console.log('value: ', value);
+      setvalue(value);
+    } catch (e) {
+      seterror(id);
+    } finally {
+      setloading(false);
+    }
+  }
+
+  useEffect(() => {
+    getDetail();
+  }, []);
+
+  return [value, error, loading];
+}
+
+export function PostDetail() {
+  const [post, error, loading] = useDetail();
+
+  if(error){
+    return(<Error>{`Post ${error} no encontrado`}</Error>)
+  }else {
+    if(loading){
+      return(
+        <Container>
+          <Title>Cargando información...</Title>
+        </Container>
+      )
+    }else {
+      return(
+        <Container>
+          <Title order={1}>{post.title}</Title>
+          <p>{post.body}</p>
+          <ButtonDelete>{post.id}</ButtonDelete>
+          <ButtonBackToHome />
+        </Container>
+      )
+    }
+  }
+
+}

@@ -1,9 +1,10 @@
-import React, { Component } from "react";
+import React, { Component, useEffect } from "react";
 import { Container, Col, Grid, Title, Space } from "@mantine/core";
 import { PostInput } from "../components/PostInput";
 import { PostList } from "../components/PostList";
-
+import { getAllPosts } from './../services/posts';
 export class Home extends Component {
+// export function Home() {
   state = {
     post: [],
   };
@@ -11,19 +12,13 @@ export class Home extends Component {
   componentDidMount() {
     this.fetchPosts();
   }
+  // useEffect( () => {
+  //   fetchPosts();
+  // })
 
   fetchPosts = () => {
-    fetch("https://jsonplaceholder.typicode.com/posts")
-      .then((response) => response.json())
-      .then((posts) => {
-        const sessionPost = JSON.parse(sessionStorage.getItem("posts") || "[]");
-        const postList = [...posts, ...sessionPost];
-        const sortedPost = postList.sort((item) => item.id);
-
-        this.state.post = sortedPost;
-        this.setState({ posts: sortedPost });
-        console.log(posts);
-      });
+      const sortedPost = getAllPosts();
+      this.setState({ post: sortedPost });
   };
 
   handleCallback = (childData) => {
@@ -31,7 +26,6 @@ export class Home extends Component {
   };
 
   render() {
-    console.log("this.state.post: ", this.state.post);
     return (
       <Container>
         <Title>Blog</Title>
