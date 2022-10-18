@@ -16,9 +16,7 @@ export class PostCard extends Component {
           />
         </Card.Section>
 
-        {/* <Group position="apart" mt="md" mb="xs"> */}
-        <Text weight={500}>{title}</Text>
-        {/* </Group> */}
+        <Text weight={500}>{title.substring(0, 20)} ...</Text>
 
         <Text size="sm" color="dimmed">
           {body.substring(0, 20)} ...

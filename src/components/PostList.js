@@ -5,11 +5,9 @@ import { Col } from "@mantine/core";
 export class PostList extends Component {
   render() {
     const { posts } = this.props;
-    console.log("this.props: ", this.props);
-    console.log("posts: ", posts);
     return posts.map((post, index) => {
       return (
-        <Col span={3} key={index}>
+        <Col span={4} key={index}>
           <PostCard
             id={post.id}
             body={post.body}

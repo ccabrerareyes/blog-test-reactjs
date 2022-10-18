@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Home } from "./pages/Home";
 import { NotFound } from "./pages/NotFound";
 import { PostDetail } from "./pages/PostDetail";
+import { ErrorPage } from "./pages/Error";
 
 class App extends Component {
   render() {
@@ -15,6 +16,11 @@ class App extends Component {
             <Route
               path="/detail"
               element={<PostDetail />}
+              errorElement={<NotFound />}
+            />
+            <Route
+              path="/error"
+              element={<ErrorPage />}
               errorElement={<NotFound />}
             />
             <Route path="*" element={<NotFound />} />

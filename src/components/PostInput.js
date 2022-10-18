@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Button, Input, Space, Textarea, Title } from "@mantine/core";
 
 export class PostInput extends Component {
+  newId = 100;
   state = {
     title: "",
     body: "",
@@ -18,8 +19,8 @@ export class PostInput extends Component {
 
   handleSubmit = () => {
     const { title, body, userId } = this.state;
-    console.log("newPost: ", { title, body });
-
+    this.inputBody.value = "";
+    this.inputTitle.value = "";
     fetch("https://jsonplaceholder.typicode.com/posts", {
       method: "POST",
       body: JSON.stringify({
@@ -33,11 +34,12 @@ export class PostInput extends Component {
     })
       .then((response) => response.json())
       .then((json) => {
+        this.newId = this.newId + 1;
+        json = { ...json, id: this.newId };
         const sessionPost = JSON.parse(sessionStorage.getItem("posts") || "[]");
         const savePost = [...sessionPost, json];
         this.onTrigger(json);
         sessionStorage.setItem("posts", JSON.stringify(savePost));
-        console.log(json);
       });
   };
 
@@ -49,7 +51,11 @@ export class PostInput extends Component {
     return (
       <div>
         <Title order={4}>Nuevo Post</Title>
-        <Input placeholder="Titulo" onChange={this.handleChangeTitle} />
+        <Input
+          placeholder="Titulo"
+          onChange={this.handleChangeTitle}
+          ref={(el) => (this.inputTitle = el)}
+        />
         <Space h="xs" />
         <Textarea
           placeholder="..."
@@ -60,6 +66,7 @@ export class PostInput extends Component {
           minRows={2}
           maxRows={4}
           onChange={this.handleChangeBody}
+          ref={(el) => (this.inputBody = el)}
         />
         <Space h="lg" />
         <Button onClick={this.handleSubmit} color="teal">

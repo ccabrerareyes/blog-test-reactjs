@@ -1,25 +1,23 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { ButtonBackToHome } from "../components/ButtonBackToHome";
 import { Container, Title } from "@mantine/core";
 import { getPostDetail } from "../services/posts";
-import { Error } from "./Error";
-import { ButtonDelete } from '../components/ButtonDelete'
+import { ErrorPage } from "./Error";
+import { ButtonDelete } from "../components/ButtonDelete";
 
 function useDetail() {
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id");
-  console.log(searchParams.get("id"));
 
   const [value, setvalue] = useState(null);
   const [error, seterror] = useState(null);
   const [loading, setloading] = useState(true);
-  
+
   async function getDetail() {
     try {
       setloading(true);
       const value = await getPostDetail(id);
-      console.log('value: ', value);
       setvalue(value);
     } catch (e) {
       seterror(id);
@@ -37,26 +35,26 @@ function useDetail() {
 
 export function PostDetail() {
   const [post, error, loading] = useDetail();
+  console.log("post: ", post);
 
-  if(error){
-    return(<Error>{`Post ${error} no encontrado`}</Error>)
-  }else {
-    if(loading){
-      return(
+  if (error) {
+    return <ErrorPage>{`Post ${error} no encontrado`}</ErrorPage>;
+  } else {
+    if (loading) {
+      return (
         <Container>
           <Title>Cargando información...</Title>
         </Container>
-      )
-    }else {
-      return(
+      );
+    } else {
+      return (
         <Container>
           <Title order={1}>{post.title}</Title>
           <p>{post.body}</p>
           <ButtonDelete>{post.id}</ButtonDelete>
           <ButtonBackToHome />
         </Container>
-      )
+      );
     }
   }
-
 }

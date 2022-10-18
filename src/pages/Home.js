@@ -1,10 +1,9 @@
-import React, { Component, useEffect } from "react";
+import React, { Component } from "react";
 import { Container, Col, Grid, Title, Space } from "@mantine/core";
 import { PostInput } from "../components/PostInput";
 import { PostList } from "../components/PostList";
-import { getAllPosts } from './../services/posts';
+import { getSessionStoragePosts, getDeletedIds } from "./../services/posts";
 export class Home extends Component {
-// export function Home() {
   state = {
     post: [],
   };
@@ -12,13 +11,22 @@ export class Home extends Component {
   componentDidMount() {
     this.fetchPosts();
   }
-  // useEffect( () => {
-  //   fetchPosts();
-  // })
 
   fetchPosts = () => {
-      const sortedPost = getAllPosts();
-      this.setState({ post: sortedPost });
+    fetch("https://jsonplaceholder.typicode.com/posts")
+      .then((response) => response.json())
+      .then((posts) => {
+        const sessionPost = getSessionStoragePosts();
+        const postList = [...posts, ...sessionPost];
+        let sortedPost = postList.sort((a, b) => {
+          return a.id > b.id ? -1 : a.id < b.id ? 1 : 0;
+        });
+        const deletedIds = getDeletedIds();
+        sortedPost = sortedPost.filter(
+          (item) => !deletedIds.includes(String(item.id))
+        );
+        this.setState({ post: sortedPost });
+      });
   };
 
   handleCallback = (childData) => {
