@@ -39,9 +39,7 @@ export function getSessionStoragePosts() {
 
 // save on session storage the deleted post
 export function setDeletedPost(id) {
-  console.log("id: ", id);
   const ids = getDeletedIds();
-  console.log("ids: ", ids);
   if (!ids.includes(String(id))) {
     const saveIds = [...ids, id].join(",");
     sessionStorage.setItem("deleted", saveIds);

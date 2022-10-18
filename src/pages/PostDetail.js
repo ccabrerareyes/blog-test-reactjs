@@ -35,7 +35,6 @@ function useDetail() {
 
 export function PostDetail() {
   const [post, error, loading] = useDetail();
-  console.log("post: ", post);
 
   if (error) {
     return <ErrorPage>{`Post ${error} no encontrado`}</ErrorPage>;
